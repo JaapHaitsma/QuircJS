@@ -28,9 +28,9 @@ WEB_IDL_BINDER_PY = $(shell dirname `which emcc`)/tools/webidl_binder.py
 EMCCFLAGS ?= -O3
 
 
-all: quirc.js
+all: src/quirc.js
 
-quirc.js: src/quirc.idl $(WASM_SRC)
+src/quirc.js: src/quirc.idl $(WASM_SRC)
 	$(PYTHON) $(WEB_IDL_BINDER_PY) src/quirc.idl src/quirc-glue
 	$(EMCC) $(EMCCFLAGS) $(WASM_SRC) --post-js src/quirc-glue.js -o src/quirc.js
 
