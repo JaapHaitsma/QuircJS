@@ -1,0 +1,6 @@
+WebIDLGrammar.pkl
+parser.out
+src/quirc.js
+src/quirc.wasm
+src/quirc-glue.js
+src/quirc-glue.cpp

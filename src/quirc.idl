@@ -1,0 +1,68 @@
+
+
+enum Quirc_DecodeError {
+        "Quirc::SUCCESS",
+        "Quirc::ERROR_INVALID_GRID_SIZE",
+        "Quirc::ERROR_INVALID_VERSION",
+        "Quirc::ERROR_FORMAT_ECC",
+        "Quirc::ERROR_DATA_ECC",
+        "Quirc::ERROR_UNKNOWN_DATA_TYPE",
+        "Quirc::ERROR_DATA_OVERFLOW",
+        "Quirc::ERROR_DATA_UNDERFLOW"
+};
+
+[Prefix="Quirc::"]
+interface Point {
+    attribute long x;
+    attribute long y;
+};
+
+[Prefix="Quirc::"]
+interface Code {
+    [Value] attribute Point[] corners;
+    attribute long size;
+    [BoundsChecked] attribute byte[] cell_bitmap;
+};
+
+[Prefix="Quirc::"]
+interface Data {
+
+    attribute long version;
+    attribute long ecc_level;
+    attribute long mask;
+
+    // This field is the highest-valued data type found in the QR
+    // code.
+    attribute long	data_type;
+
+    // Data payload. For the Kanji datatype, payload is encoded as
+    //Shift-JIS. For all other datatypes, payload is ASCII text.
+    
+    [BoundsChecked] attribute byte[]  payload;
+    
+    attribute long payload_len;
+    // ECI assignment number
+    attribute long		eci;   
+};
+
+
+[Prefix="Quirc::"]
+interface Result {
+    attribute Quirc_DecodeError error;
+    [Value] attribute Data data;
+};
+
+interface Quirc {
+    void Quirc();
+    [Const] DOMString getVersion();
+    long resize(long w, long h);
+    VoidPtr begin();
+    void end();
+    [Const] DOMString strError(Quirc_DecodeError err);
+    long count();
+    [Value] Code extract(long index);
+    [Value] Result decode(Code code);
+    long getPixel(long index);
+    long getPixelRGBA(long index);
+};
+
